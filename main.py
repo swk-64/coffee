@@ -2,18 +2,25 @@ import sys
 import sqlite3
 
 from PyQt5.QtWidgets import QApplication, QWidget, QTableWidgetItem, QDialog
-from PyQt5 import uic
+
+from addEditCoffeeForm import Ui_E
+from main_UI import Ui_Form
 
 
-class CoffeeRead(QWidget):
+class Dialog(QDialog, Ui_E):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+
+class CoffeeRead(QWidget, Ui_Form):
     def __init__(self):
         super().__init__()
         self.is_incorrectID = False
-        uic.loadUi('main.ui', self)
+        self.setupUi(self)
         self.connection = sqlite3.connect("coffee.sqlite")
         self.editButton.clicked.connect(self.open_dialog)
-        self.dlg = QDialog()
-        uic.loadUi('addEditCoffeeForm.ui', self.dlg)
+        self.dlg = Dialog()
         self.tableWidget.setColumnCount(7)
         self.tableWidget.setRowCount(1)
         self.tableWidget.setItem(0, 0, QTableWidgetItem('ID'))

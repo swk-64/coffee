@@ -18,7 +18,7 @@ class CoffeeRead(QWidget, Ui_Form):
         super().__init__()
         self.is_incorrectID = False
         self.setupUi(self)
-        self.connection = sqlite3.connect("coffee.sqlite")
+        self.connection = sqlite3.connect("./data/coffee.sqlite")
         self.editButton.clicked.connect(self.open_dialog)
         self.dlg = Dialog()
         self.tableWidget.setColumnCount(7)

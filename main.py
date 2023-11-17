@@ -77,24 +77,27 @@ class CoffeeRead(QWidget):
                     i + 1, j, QTableWidgetItem(str(elem)))
 
     def save_changes(self):
-        if not self.is_incorrectID:
-            if self.dlg.radioButtonadd.isChecked():
-                que = '''INSERT INTO coffee ('название сорта', 'степень обжарки', 'молотый/в зернах', 
-                'описание вкуса', 'цена', 'объем упаковки') VALUES(?, ?, ?, ?, ?, ?)'''
-                changed = []
-                for i in range(1, 7):
-                    changed.append(self.dlg.tableWidget.item(1, i).text())
-            else:
-                que = '''UPDATE coffee SET ID = ?, 'название сорта' = ?, 'степень обжарки' = ?, 'молотый/в зернах' = ?, 
-                'описание вкуса' = ?, 'цена' = ?, 'объем упаковки' = ? WHERE ID = ?'''
-                changed = []
-                for i in range(7):
-                    changed.append(self.dlg.tableWidget.item(1, i).text())
-                changed.append(self.dlg.coffeeID.value())
+        try:
+            if not self.is_incorrectID:
+                if self.dlg.radioButtonadd.isChecked():
+                    que = '''INSERT INTO coffee ('название сорта', 'степень обжарки', 'молотый/в зернах', 
+                    'описание вкуса', 'цена', 'объем упаковки') VALUES(?, ?, ?, ?, ?, ?)'''
+                    changed = []
+                    for i in range(1, 7):
+                        changed.append(self.dlg.tableWidget.item(1, i).text())
+                else:
+                    que = '''UPDATE coffee SET ID = ?, 'название сорта' = ?, 'степень обжарки' = ?, 
+                    'молотый/в зернах' = ?, 'описание вкуса' = ?, 'цена' = ?, 'объем упаковки' = ? WHERE ID = ?'''
+                    changed = []
+                    for i in range(7):
+                        changed.append(self.dlg.tableWidget.item(1, i).text())
+                    changed.append(self.dlg.coffeeID.value())
 
-            self.connection.cursor().execute(que, tuple(changed))
-            self.connection.commit()
-            self.table_update()
+                self.connection.cursor().execute(que, tuple(changed))
+                self.connection.commit()
+                self.table_update()
+        except AttributeError:
+            pass
 
     def closeEvent(self, a0):
         self.dlg.close()
